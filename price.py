@@ -1,17 +1,44 @@
-from enum import Enum
+from abc import ABC, abstractmethod
 
-class PriceStrategy(Enum):
-    """Implement a Price Strategy using Enum."""
-    NEW_RELEASE = {"price": lambda days: 3.0*days, 
-                    "frp": lambda days: days
-                  }
-    REGULAR_PRICE = {"price":2, "frp": 1}
-    CHILDREN_PRICE = {"price": 1.5, "frp": 1}
-    
+class PriceStrategy(ABC):
+    """Abstract base class (interface) for rental pricing."""
+
+    @abstractmethod
+    def get_rental_points(self, days: int) -> int:
+        """The frequent renter points earned for this rental."""
+        pass
+
+    @abstractmethod
     def get_price(self, days: int) -> float:
-        pricing = self.value["price"]
-        return pricing(days)
+        """The price of this movie rental."""
+        pass
 
-    def get_rental_points(self, days: int):
-        freq_rental_points = self.value["frp"]
-        return freq_rental_points(days)
+class NewRelease(PriceStrategy):
+    """Pricing rules for New Release movies."""
+
+    def get_rental_points(self, days):
+        """New release rentals get 1 point per day rented."""
+        return days
+    
+    def get_price(self, days):
+        return 3.0 * days
+
+class RegularPrice(PriceStrategy):
+
+    def get_rental_points(self, days):
+        return 1
+
+    def get_price(self, days):
+        return 1.5 + (1.5*(days-2)) if days > 2 else 1.5
+
+class ChildrensPrice(PriceStrategy):
+
+    def get_rental_points(self, days):
+        return 1
+        
+    def get_price(self, days):
+        return 1.5 + (1.5*(days-2)) if days > 3 else 1.5
+
+NEW_RELEASE = NewRelease()
+REGULAR = RegularPrice()
+CHILDREN =ChildrensPrice()
