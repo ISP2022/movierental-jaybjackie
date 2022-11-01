@@ -5,23 +5,32 @@ from movie import Movie
 class MovieCatalog:
 
     def __init__(self):
+        self.movie_data = []
         with open('movies.csv', newline='') as file:
             reader = csv.reader(file, delimiter=',')
             data = list(reader)[2:]
             for line in data:
                 line[-1] = line[-1].split("|")
-        self.movie_data = data
+            for line in data:
+                movie = Movie(line[1], int(line[2]), line[-1] )
+                self.movie_data.append(movie)
 
     def get_movie(self, *args):
         """Return list of movie information."""
-        tmp = [line for line in self.movie_data if isinstance(args[0], str) and args[0] in line[1]]
-        for movie in tmp:
-            if args[0] in movie:
-                if len(args) == 1:
-                    return max(tmp)
-                if str(args[1]) == movie[2]:
-                    return movie
-            
+        # tmp = [line for line in self.movie_data if isinstance(args[0], str) and args[0] in line[1]]
+        tmp = []
+        if isinstance(args[0], str):
+            for movie in self.movie_data:
+                if args[0] in movie.title:
+                    # print(movie.title)
+                    tmp.append(movie)
+            for movie in tmp:
+                if args[0] in movie.title:
+                    if len(args) == 1:
+                        return max(m for m in tmp)
+                    if args[1] == movie.year:
+                        return movie
+                        
 if __name__ == "__main__":
     catalog = MovieCatalog()
     movie = catalog.get_movie("No Time to Die")
