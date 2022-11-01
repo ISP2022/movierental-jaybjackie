@@ -1,4 +1,5 @@
 import logging
+from typing import Collection
 from price import PriceCode
 
 class Movie:
@@ -10,24 +11,17 @@ class Movie:
     NEW_RELEASE = PriceCode.NEW_RELEASE
     CHILDRENS = PriceCode.CHILDREN_PRICE
     
-    def __init__(self, title, price_code: PriceCode):
+    def __init__(self, title: str, year: int, genre: Collection[str]):
         # Initialize a new movie. 
         self.title = title
-        self.price_code = price_code
-
-    def get_price_code(self):
-        # get the price code
-        return self.price_code
+        self.year = year
+        self.genre = genre
     
-    def get_title(self):
+    def get_title(self) -> str:
         return self.title
 
-    def get_price(self, days: int) -> float:
-        return self.price_code.get_price(days)
-    
-    def get_rental_points(self, days):
-        return self.price_code.get_rental_points(days)
-
+    def is_genre(self, string: str) -> bool:
+        return any(g.lower() == string.lower() for g in self.genre)
 
     def __str__(self):
-        return self.title
+        return f"{self.title}({self.year})"

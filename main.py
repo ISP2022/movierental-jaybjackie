@@ -2,6 +2,7 @@
 # Create a customer with some movies and print a statement.
 
 from movie import Movie
+from price import PriceCode
 from rental import Rental
 from customer import Customer
 
@@ -21,6 +22,7 @@ if __name__ == '__main__':
     customer = Customer("Edward Snowden")
     days = 1
     for movie in make_movies():
-        customer.add_rental(Rental(movie, days))
+        price = PriceCode(Movie.get_price_code(movie))
+        customer.add_rental(Rental(movie, days, price))
         days = (days + 2) % 5 + 1
     print(customer.statement())
