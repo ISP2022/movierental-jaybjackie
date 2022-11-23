@@ -1,4 +1,5 @@
 from price import PriceCode
+
 class Rental:
    """
    A rental of a movie by customer.
@@ -10,7 +11,7 @@ class Rental:
    For simplicity of this application only days_rented is recorded.
    """
 
-   # The types of movies (price_code). 
+   # The types of movies (price_code).
    REGULAR = PriceCode.REGULAR_PRICE
    NEW_RELEASE = PriceCode.NEW_RELEASE
    CHILDRENS = PriceCode.CHILDREN_PRICE
